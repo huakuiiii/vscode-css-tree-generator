@@ -22,7 +22,7 @@ const getCssKey = (node: InterfaceNode) => {
 const getUniqueNodes = (nodes: InterfaceNode[]) => {
   const handledKeys: InterfaceHandledKeys = {};
 
-  return nodes.filter(childNode => {
+  return nodes.filter((childNode) => {
     const childCssKey = getCssKey(childNode);
 
     if (handledKeys[childCssKey]) {
@@ -46,7 +46,7 @@ const parsePreprocessorNode = (node: InterfaceNode, level: number): string => {
   let cssTree = `${spaceBefore}${cssKey} {`;
   cssTree += '\n';
   cssTree += getUniqueNodes(node.children)
-    .map(childNode => parsePreprocessorNode(childNode, level + 1))
+    .map((childNode) => parsePreprocessorNode(childNode, level + 1))
     .join('\n\n');
   cssTree += '\n';
   cssTree += `${spaceBefore}}`;
@@ -67,7 +67,7 @@ const parseCssNode = (node: InterfaceNode, parentKey: string = ''): string => {
   cssTree += `${computedKey} {\n\n}`;
   cssTree += '\n\n';
   cssTree += getUniqueNodes(node.children)
-    .map(childNode => parseCssNode(childNode, computedKey))
+    .map((childNode) => parseCssNode(childNode, computedKey))
     .join('\n\n');
 
   return cssTree;
@@ -75,7 +75,7 @@ const parseCssNode = (node: InterfaceNode, parentKey: string = ''): string => {
 
 const generate = (tree: InterfaceNode[], { isCss = false } = {}) => {
   const cssTree = getUniqueNodes(tree)
-    .map(node => (isCss ? parseCssNode(node) : parsePreprocessorNode(node, 0)))
+    .map((node) => (isCss ? parseCssNode(node) : parsePreprocessorNode(node, 0)))
     .join('\n\n');
 
   return cssTree;
